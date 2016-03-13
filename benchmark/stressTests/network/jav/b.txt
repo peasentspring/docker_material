@@ -1,0 +1,2 @@
+Receive: 8388608 bytes in 89 milli-seconds = 94254.02 KB/sec (754032.2 Kbps).
+

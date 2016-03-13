@@ -1,0 +1,42 @@
+This is ApacheBench, Version 2.3 <$Revision: 1528965 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking 192.168.0.244 (be patient)
+
+
+Server Software:        Apache/2.4.17
+Server Hostname:        192.168.0.244
+Server Port:            80
+
+Document Path:          /OS_ORDER_256.txt
+Document Length:        262144 bytes
+
+Concurrency Level:      100
+Time taken for tests:   223.265 seconds
+Complete requests:      10000
+Failed requests:        0
+Total transferred:      2623960000 bytes
+HTML transferred:       2621440000 bytes
+Requests per second:    44.79 [#/sec] (mean)
+Time per request:       2232.649 [ms] (mean)
+Time per request:       22.326 [ms] (mean, across all concurrent requests)
+Transfer rate:          11477.22 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0  208  49.4    214    1234
+Processing:  1075 2020 130.3   1999    4080
+Waiting:        1  206  28.3    213     419
+Total:       1315 2228 133.8   2216    4302
+
+Percentage of the requests served within a certain time (ms)
+  50%   2216
+  66%   2229
+  75%   2233
+  80%   2249
+  90%   2380
+  95%   2430
+  98%   2569
+  99%   2644
+ 100%   4302 (longest request)

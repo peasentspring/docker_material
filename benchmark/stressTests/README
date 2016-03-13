@@ -1,0 +1,56 @@
+Test Cases
+This benchmark categorizes the operating system resource into five different aspects: CPU, memory, process creation, disk I/O, and network I/O. It includes six stress tests: CPU intensive, memory intensive, a fork bomb, disk I/O intensive, network transmit intensive, network receive intensive.
+
+Methodology
+The tests stress one of the virtual machines (and call it the misbehaving VM) with respective resource intensive tests. Some performance metric (i.e. a simulated production workload) is used to evaluate the performance isolation of the underlying virtualization system by measuring the impact of the stress tests on the rest on of the virtual machines (and call them the well-behaved VMs).
+
+Stress Test Overview
+Isolation Benchmark Suite is designed to quantify the degree to which a virtualization system limits the impact of a misbehaving virtual machine on other well-behaving virtual machines running on the same physical machine. This benchmark suite includes six different stress tests -
+
+    * a CPU intensive test: Continuouly does a series of integer and floating point calculations (Multiplication, Division, Remainder) in an attempt to occupy a majority of the CPU time for its calculations to replicate a stressing CPU scenario.
+    * a memory intensive test: Continuously allocate and initialize memory (to ensure that memory is actually allocated by the system) in an attempt to use all of the system memory.
+    * a fork bomb: Continuously create processes in an attempt to overwhelm the system.
+    * a disk intensive test: Uses the IOzone benchmark tool to continuously read and write to the hard disk (by writing files larger than main memory to ensure not just testing memory) in an attempt to consume all of the disk I/O bandwidth.
+    * two network intensive tests (send and receive): Uses the TTCP benchmark tool to send/receive continuously UDP/TCP packets to/from the virtual machines in an attempt to consume all the possible network bandwidth. 
+
+Usage of the Stress Tests
+In the Isolation Benchmark Suite, downloadable here, there are five subdirectories in the stressTests/ directory. The subdirectories are cpu/, memory/, fork/, disk_iozone/, network/. The requirements for the stress tests are gcc, make, perl and standard UNIX utilities such as sh. Below is the commands that were used to obtain the results.
+
+    * Running the CPU intensive test
+        cd stressTests/cpu
+        make
+        ./cpuBomb
+    * Running the memory intensive test
+        cd stressTests/memory
+        make   ./malloc.sh
+    * Running the fork bomb
+        cd stressTests/fork
+        make
+        ./forkBomb
+    * Running the disk intensive test
+
+        cd stressTests/disk_iozone
+        make
+    *   ./run_iozone.sh Running the network intensive tests
+      Set up an external physical machine to act as a network server
+          o Transmit:
+            Network server:
+                cd stressTests/network
+                make
+                ./stress.sh x.txt INFINITY perludp-multithread
+            Misbehaving VM:
+                cd stressTests/network
+                make
+                ./stress.sh no perludp-multithread
+
+          o Receive:
+            Network server:
+                cd stressTests/network
+                make
+                ./stress.sh no perludp-multithread
+            Misbehaving VM:
+                cd stressTests/network
+                make
+                ./stress.sh x.txt INFINITY perludp-multithread
+
+Each directory contains a README file that describes how to use each stress test in more detail. 

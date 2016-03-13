@@ -1,0 +1,106 @@
+###############################################################################
+# stress.sh    - a wrapper to all the files in the directory structure. 
+#				 Siplifies the usage of all the various ways this package 
+#				 can stress the upd/tcp architecture.
+#
+# Authored 	   - Demetrios Dimatos
+# Date		   - December 20, 2005
+# Contact	   - dimatos@gmail.com
+###############################################################################
+
+FILES IN DIRECTORY bin/: 		-> in progress!
+FILES IN DIRECTORY jav/:        -> in progress!
+FILES IN DIRECTORY src/c:       -> in progress!
+FILES IN DIRECTORY perl/tcp/:   -> in progress!
+FILES IN DIRECTORY perl/udp/: 	
+	threadudpserver.pl - program to act as a server udp blaster. This version will
+						 accept many incomming requests to the same port and fork.
+						 Idea is to drive a machines Net via UDP by running this on the
+						 machine to be driven with the corresponding udpclient.pl
+						 
+	 threadudpclient.pl - program to act as a client by opening 4 sockets to the 
+						  same port where the threadudpserver.pl is multithreaded 
+						  and will listen on a specfic thread
+						  
+						  
+BUGS:
+	The "c" version will not compile on solaris, there is some conflict in the 
+	declararions in time.h that prevents compilation. Currently the supplied 
+	binaries are compiled in x86 platform and will run on linux. If you need to 
+	compile to another platoform "cd to src/c/" and "gcc ttcp.c -o ttcp" and 
+	"cp ttcp ../../bin/". 
+	
+	For java only the class is provided.
+	
+	Many more features are available with flag options for both java and c that 
+	need to be implemented into the wrapper script. Now the wrapper provides 
+	basic usage.
+
+
+	
+USAGE:
+	IMPORTANT NOTES: 
+		"MATCHING RECEIVER MUST BE STARTED BEFORE MATCHING SENDER"
+		
+		"In my examples below I chose to use the loopback (127.0.0.1), you 
+		 probably really have no reason to test loopback so replace it 
+		 with a real ip in the format xxx.xxx.xxx.xxx that you whish to stress"
+
+	- C Usage:
+		Receiver c USAGE:        ./stress.sh <port> <c>
+		Sender c USAGE:          ./stress.sh <port> <host> <file> <c>
+		
+		- Example C Usage               
+			./stress.sh 5001 c
+			./stress.sh 5001 127.0.0.1 x.txt c
+			
+			
+	- Java Usage:
+	  	Receiver java USAGE:     ./stress.sh <port> <buffer size> <number buffers> <java>
+		Sender java USAGE:       ./stress.sh <port> <host> <java>
+	  
+		- Example Java Usage                  
+	  		./stress.sh 5001 1024 10 java
+			./stress.sh 5001 127.0.0.1 java
+
+			
+	- Perl UDP Usage
+		Receiver perl udp USAGE: ./stress.sh <port> <[verbose] yes/no> <perludp>
+		Sender perl udp USAGE:   ./stress.sh <port> <host> <file> <n-times/INFINITY> <perludp>
+		
+		- Example perl UDP Usage 1.
+             ./stress.sh 5001 yes perludp
+             ./stress.sh 5001 127.0.0.1 x.txt 1000 perludp
+			 
+		- Example perl UDP Usage 2.
+             ./stress.sh 5001 no perludp
+             ./stress.sh 5001 127.0.0.1 x.txt INFINITY perludp
+			 
+			 
+	- Perl TCP Usage
+		Receiver perl tcp USAGE: ./stress.sh <port> <host> <[verbose] yes/no> <perltcp>
+		Sender perl tcp USAGE:   ./stress.sh <port> <host> <file> <n-times> <perltcp>
+		
+		- Example perl TCP Usage
+			./stress.sh 5001 127.0.0.1 yes perltcp
+			./stress.sh 5001 127.0.0.1 x.txt 1000 perltcp
+
+	
+	- Multi-thread perl UDP Usage
+		Receiver perl-multi-thread udp USAGE: ./stress.sh <port> <[verbose] yes/no> <perludp-thread>
+		Sender perl-multi-thread udp USAGE:   ./stress.sh <port> <host> <file> <perludp-thread>
+		
+		- Example 1 - using the matching provided multi-thread sender will open 5 sockets
+					  user the later example if you want more than 5 and a more maximum stress
+					  of the multi-thread receiver.
+			./stress.sh 5001 yes perludp-thread
+			./stress.sh 5001 127.0.0.1 x.txt perludp-thread
+			
+		- Example 2 - In this example a non threaded sender will be used to stress the threaded receiver.
+			./stress.sh 5001 yes perludp-thread
+					- for teh each of the clients below either put them in the 
+					  background or the preferred, open a new terminal for each 
+					  of the clients with exactly the same port, in other words
+					  copy the command below and past in any number of terminals.
+			./stress.sh 5001 127.0.0.1 x.txt INFINITY perludp
+
